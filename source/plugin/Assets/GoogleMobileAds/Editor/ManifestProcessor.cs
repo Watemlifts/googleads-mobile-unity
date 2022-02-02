@@ -85,7 +85,8 @@ public class ManifestProcessor : IPreprocessBuild
                 .Where( elem => elem.Name.LocalName.Equals("meta-data"));
 
         XElement elemGMAEnabled = GetMetaElement(metas, META_APPLICATION_ID);
-        string appId = GoogleMobileAdsSettings.Instance.GoogleMobileAdsAndroidAppId;
+        GoogleMobileAdsSettings instance = GoogleMobileAdsSettingsEditor.GetInstance();
+        string appId = instance.GoogleMobileAdsAndroidAppId;
 
         if (appId.Length == 0)
         {
