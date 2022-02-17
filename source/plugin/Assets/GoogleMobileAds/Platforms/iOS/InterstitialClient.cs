@@ -43,7 +43,8 @@ namespace GoogleMobileAds.iOS
 
         internal delegate void GADUInterstitialAdFailedToPresentFullScreenContentCallback(IntPtr interstitialClient, IntPtr error);
 
-        internal delegate void GADUInterstitialAdDidPresentFullScreenContentCallback(IntPtr interstitialClient);
+        internal delegate void GADUInterstitialAdWillPresentFullScreenContentCallback(
+            IntPtr interstitialClient);
 
         internal delegate void GADUInterstitialAdDidDismissFullScreenContentCallback(IntPtr interstitialClient);
 
@@ -88,13 +89,9 @@ namespace GoogleMobileAds.iOS
             this.InterstitialPtr = Externs.GADUCreateInterstitial(this.interstitialClientPtr);
 
             Externs.GADUSetInterstitialCallbacks(
-                this.InterstitialPtr,
-                InterstitialLoadedCallback,
-                InterstitialFailedToLoadCallback,
-                AdDidPresentFullScreenContentCallback,
-                AdFailedToPresentFullScreenContentCallback,
-                AdDidDismissFullScreenContentCallback,
-                AdDidRecordImpressionCallback,
+                this.InterstitialPtr, InterstitialLoadedCallback, InterstitialFailedToLoadCallback,
+                AdFailedToPresentFullScreenContentCallback, AdWillPresentFullScreenContentCallback,
+                AdDidDismissFullScreenContentCallback, AdDidRecordImpressionCallback,
                 InterstitialPaidEventCallback);
         }
 
@@ -197,14 +194,12 @@ namespace GoogleMobileAds.iOS
             }
         }
 
-        [MonoPInvokeCallback(typeof(GADUInterstitialAdDidPresentFullScreenContentCallback))]
-        private static void AdDidPresentFullScreenContentCallback(IntPtr interstitialClient)
-        {
-            InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
-            if (client.OnAdDidPresentFullScreenContent != null)
-            {
-                client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
-            }
+        [MonoPInvokeCallback(typeof(GADUInterstitialAdWillPresentFullScreenContentCallback))]
+        private static void AdWillPresentFullScreenContentCallback(IntPtr interstitialClient) {
+          InterstitialClient client = IntPtrToInterstitialClient(interstitialClient);
+          if (client.OnAdDidPresentFullScreenContent != null) {
+            client.OnAdDidPresentFullScreenContent(client, EventArgs.Empty);
+          }
         }
 
         [MonoPInvokeCallback(typeof(GADUInterstitialAdDidDismissFullScreenContentCallback))]
