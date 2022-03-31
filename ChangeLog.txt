@@ -1,6 +1,13 @@
 Google Mobile Ads Unity Plugin Change Log
 
 **************
+Version Next
+**************
+
+Plugin:
+- Fixed Github issue [2001](https://github.com/googleads/googleads-mobile-unity/issues/2001) related to Android manifest.
+
+**************
 Version 7.0.0
 **************
 
